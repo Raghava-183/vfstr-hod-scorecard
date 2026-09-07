@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>HoD's Score Card 2025-26 — Computer Applications, VFSTR</title>
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+<div id="gate" hidden>
+  <form class="gate-card" id="gate-form">
+    <div class="bannerimg" role="img" aria-label="Vignan's Foundation for Science, Technology and Research"></div>
+    <h1>HoD's Score Card 2025-26</h1>
+    <p>Department of Computer Applications, School of Computing and Informatics.</p>
+    <label for="g-name">Your name</label>
+    <input id="g-name" autocomplete="name" required placeholder="e.g. Dr K. Ramesh">
+    <label for="g-pass">Department password</label>
+    <input id="g-pass" type="password" autocomplete="current-password" required>
+    <button type="submit" id="g-go">Sign in</button>
+    <div class="gate-err" id="g-err" role="alert"></div>
+    <p style="margin-top:14px;font-size:12px;color:var(--ink3)">Your name is recorded against everything you save, so the department can see who entered each figure.</p>
+  </form>
+</div>
+
+<div id="shell" hidden>
+<div class="bannerimg" role="img" aria-label="Department of Computer Applications, School of Computing and Informatics — Vignan's Foundation for Science, Technology and Research"></div>
+<div class="rails"></div>
+
+<div id="view-sheet">
+<header class="title">
+  <div class="wrap title-in">
+    <div>
+      <div class="kicker">Head of Department · Annual Score Card</div>
+      <div class="who" style="margin-top:8px">Signed in as <b id="who-name"></b>
+        <button type="button" id="btn-signout">Sign out</button></div>
+      <h1>HoD's Score Card <em>2025-26</em></h1>
+      <p class="title-sub" id="t-sub"></p>
+      <div class="pills" id="pills"></div>
+    </div>
+    <div class="donut" id="donut"><div class="donut-txt">
+      <div class="n num" id="d-n"></div><div class="l">metrics scored</div></div></div>
+  </div>
+</header>
+
+<section class="spine">
+  <div class="wrap">
+    <div class="spine-head">
+      <h2>All <span id="s-total"></span> metrics in workbook order</h2>
+      <span class="spine-hint">One mark per metric · select a mark to jump to that row</span>
+    </div>
+    <div class="ticks" id="ticks"></div>
+    <div class="spine-labels" id="spine-labels"></div>
+  </div>
+</section>
+
+<div class="wrap"><div class="tally" id="tally"></div></div>
+
+<nav class="toolbar">
+  <div class="wrap tb-in">
+    <div class="tb-links" id="tb-links"></div>
+    <div class="tb-tools">
+      <input id="search" type="search" placeholder="Search metrics…" aria-label="Search metrics">
+      <div class="chips" id="chips"></div>
+      <button class="btn" id="btn-reset">Clear filters</button>
+      <span class="count-pill" id="doc-count"></span>
+      <span class="sync" id="sync">Saved</span>
+      <button class="btn" id="btn-refresh">Refresh</button>
+      <button class="btn" id="btn-csv">CSV</button>
+      <button class="btn" onclick="window.print()">Print</button>
+      <button class="btn btn-solid" id="btn-present">Present</button>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <div class="sheet-head">
+    <div><h2>Score card sheet</h2>
+      <p>Every metric as recorded in the workbook. The shaded cell on each row is the band the response lands in.</p></div>
+    <div class="legend" id="legend"></div>
+  </div>
+
+  <p class="hint">Click any row to open its own page for <b>Justification</b>, <b>Proof</b> and <b>Action plan</b>. The <b>Response</b> and <b>Comments</b> cells are editable in place — change a response and the band, the comment, the totals, the donut and the section bars all recalculate at once. A tick beside the row number means that metric has a saved entry.</p>
+
+  <div class="sheet">
+    <table>
+      <thead>
+        <tr class="grp">
+          <th class="sno" scope="col"></th><th colspan="3"></th><th></th>
+          <th colspan="4">Performance bands</th><th></th>
+        </tr>
+        <tr>
+          <th class="sno" scope="col">S.No.</th>
+          <th scope="col">Effectiveness /<br>Efficiency</th>
+          <th scope="col">Portfolio</th>
+          <th scope="col">Metrics</th>
+          <th scope="col" style="text-align:right">Response<span style="display:block;font-weight:520;font-size:10px;color:#a8c6ee">2025-26</span></th>
+          <th class="band" scope="col">Beginning</th>
+          <th class="band" scope="col">Developing</th>
+          <th class="band" scope="col">Proficient</th>
+          <th class="band" scope="col">Exemplary</th>
+          <th scope="col">Comments</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="noresult" id="noresult" hidden>No metric matches that filter.</div>
+  </div>
+
+  <section class="section" id="data-to-verify">
+    <div class="sec-h"><h2>Data to verify</h2>
+      <p>Six rows where the recorded value looks like a gap in the workbook rather than a result. Four of them currently count against the department, so they are worth settling before the review.</p></div>
+    <div class="diff" id="diff"></div>
+    <div class="flags" id="flags"></div>
+  </section>
+
+</main>
+
+</div><!-- /view-sheet -->
+
+<div id="view-detail" hidden>
+  <div class="wrap">
+    <div class="d-nav">
+      <button class="btn" id="d-back">&larr; Back to score card</button>
+      <button class="btn" id="d-prev">Previous metric</button>
+      <button class="btn" id="d-next">Next metric</button>
+      <span class="pos num" id="d-pos"></span>
+    </div>
+    <div class="d-strip" id="d-strip"></div>
+    <div class="d-fields">
+      <div class="d-field">
+        <label class="d-label" for="f-just">Justification</label>
+        <textarea id="f-just" placeholder="Why the response stands where it does this year."></textarea>
+      </div>
+      <div class="d-field">
+        <label class="d-label" for="f-proof">Proof</label>
+        <textarea id="f-proof" placeholder="Evidence supporting the response — document names, file references, dates, counts."></textarea>
+      </div>
+      <div class="d-field">
+        <label class="d-label" for="f-action">Action plan</label>
+        <textarea id="f-action" placeholder="What will be done to reach the next band, by when, and who owns it."></textarea>
+      </div>
+      <div class="d-field files">
+        <span class="d-label">Proof files</span>
+        <div>
+          <div class="file-list" id="file-list"></div>
+          <div class="drop" id="drop">
+            <b>Choose a file</b> or drag one here — PDF, image, Word or Excel, up to 10 MB.
+            <input type="file" id="file-pick" hidden
+                   accept=".pdf,.png,.jpg,.jpeg,.webp,.gif,.doc,.docx,.xls,.xlsx,.ppt,.pptx">
+          </div>
+          <div class="upbar" id="upbar" hidden><i></i></div>
+        </div>
+      </div>
+    </div>
+    <div class="d-meta" id="d-meta"></div>
+    <div class="conflict" id="conflict" hidden></div>
+    <div class="d-actions">
+      <span class="d-status" id="d-status"></span>
+      <button class="btn btn-save" id="d-save">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="pagefoot"><div class="wrap">Compiled from the HoD's Score Card workbook, 2025-26 · Band assignments follow the workbook's own scoring column.</div></div>
+<div class="footimg"></div>
+
+<div id="present" role="dialog" aria-modal="true" aria-label="Presentation">
+  <div class="p-top bannerimg"></div>
+  <div class="p-body"><div class="p-in" id="p-in"></div></div>
+  <div class="p-foot">
+    <span id="p-label"></span>
+    <div class="ctrl">
+      <div class="p-dots" id="p-dots"></div>
+      <button class="btn" id="p-prev">Back</button>
+      <button class="btn" id="p-next">Next</button>
+      <button class="btn" id="p-exit">Exit</button>
+    </div>
+  </div>
+</div>
+</div>
+<script src="/app.js"></script>
+</body>
+</html>

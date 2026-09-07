@@ -1,0 +1,17 @@
+{
+  "name": "vfstr-hod-scorecard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HoD's Score Card 2025-26 — Department of Computer Applications, VFSTR",
+  "type": "module",
+  "scripts": {
+    "seed": "node scripts/seed.mjs",
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.4"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
