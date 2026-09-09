@@ -13,13 +13,15 @@
     <div class="bannerimg" role="img" aria-label="Vignan's Foundation for Science, Technology and Research"></div>
     <h1>HoD's Score Card 2025-26</h1>
     <p>Department of Computer Applications, School of Computing and Informatics.</p>
-    <label for="g-name">Your name</label>
-    <input id="g-name" autocomplete="name" required placeholder="e.g. Dr K. Ramesh">
-    <label for="g-pass">Department password</label>
+    <label for="g-user">Username</label>
+    <input id="g-user" autocomplete="username" required inputmode="numeric" placeholder="213">
+    <label for="g-pass">Password</label>
     <input id="g-pass" type="password" autocomplete="current-password" required>
+    <label for="g-name">Your name <span style="font-weight:500;color:var(--ink3)">— recorded against your entries</span></label>
+    <input id="g-name" autocomplete="name" placeholder="e.g. Dr K. Ramesh">
     <button type="submit" id="g-go">Sign in</button>
     <div class="gate-err" id="g-err" role="alert"></div>
-    <p style="margin-top:14px;font-size:12px;color:var(--ink3)">Your name is recorded against everything you save, so the department can see who entered each figure.</p>
+    <p style="margin-top:14px;font-size:12px;color:var(--ink3)">The department shares one username and password. Your name is stamped on everything you save, so the department can see who entered each figure.</p>
   </form>
 </div>
 

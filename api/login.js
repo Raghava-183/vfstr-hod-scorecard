@@ -10,10 +10,12 @@ export default async function handler(req, res) {
 
   const expected = process.env.DEPT_PASSWORD;
   if (!expected) return res.status(500).json({ error: 'DEPT_PASSWORD is not configured' });
+  const expectedUser = process.env.DEPT_USERNAME || '213';
 
-  const { name = '', password = '' } = req.body || {};
-  const person = String(name).trim().slice(0, 80);
-  if (person.length < 2) return res.status(400).json({ error: 'Please enter your name.' });
+  const { username = '', password = '', name = '' } = req.body || {};
+  const user = String(username).trim();
+  // Name is recorded against every save. Falls back to the username if left blank.
+  const person = String(name).trim().slice(0, 80) || user;
 
   await ensureSchema();
   const ip = clientIp(req);
@@ -27,7 +29,9 @@ export default async function handler(req, res) {
 
   // Hash both sides so the comparison is fixed-length regardless of input.
   const h = v => crypto.createHash('sha256').update(String(v)).digest('hex');
-  if (!safeEqual(h(password), h(expected))) {
+  const okUser = safeEqual(h(user), h(expectedUser));
+  const okPass = safeEqual(h(password), h(expected));
+  if (!okUser || !okPass) {
     await sql`
       INSERT INTO login_attempts (ip, fails, last_try) VALUES (${ip}, 1, now())
       ON CONFLICT (ip) DO UPDATE SET
@@ -35,7 +39,7 @@ export default async function handler(req, res) {
                      THEN 1 ELSE login_attempts.fails + 1 END,
         last_try = now()`;
     await new Promise(r => setTimeout(r, 600));
-    return res.status(401).json({ error: 'Incorrect department password.' });
+    return res.status(401).json({ error: 'Incorrect username or password.' });
   }
 
   await sql`DELETE FROM login_attempts WHERE ip = ${ip}`;

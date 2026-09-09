@@ -93,7 +93,7 @@ $('gate-form').addEventListener('submit', async e => {
   const btn = $('g-go'); btn.disabled = true; $('g-err').textContent = '';
   try {
     const r = await api('/api/login', { method: 'POST',
-      body: { name: $('g-name').value, password: $('g-pass').value } });
+      body: { username: $('g-user').value, password: $('g-pass').value, name: $('g-name').value } });
     ME = r.name;
     $('gate').hidden = true;
     await boot();
@@ -112,7 +112,7 @@ $('btn-signout').onclick = async () => {
   try {
     const s = await api('/api/session');
     if (s.signedIn) { ME = s.name; await boot(); }
-    else { $('gate').hidden = false; $('g-name').focus(); }
+    else { $('gate').hidden = false; $('g-user').focus(); }
   } catch {
     $('gate').hidden = false;
   }
