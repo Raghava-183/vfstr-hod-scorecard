@@ -31,19 +31,36 @@ export function safeEqual(a, b) {
 export function issueCookie(res, name) {
   const body = b64(JSON.stringify({ name, iat: Date.now() }));
   const token = `${body}.${sign(body)}`;
+  // In production the score card is embedded in the department portal, which is a
+  // different site. A SameSite=Lax cookie is withheld inside a cross-site frame,
+  // so the API would see every request as signed out. SameSite=None fixes that,
+  // and browsers only accept it alongside Secure. Locally (http) we stay on Lax,
+  // because SameSite=None without Secure is rejected outright.
+  const crossSite = process.env.NODE_ENV === 'production';
   const parts = [
     `${COOKIE}=${token}`,
     'Path=/',
     'HttpOnly',
-    'SameSite=Lax',
+    crossSite ? 'SameSite=None' : 'SameSite=Lax',
     `Max-Age=${MAX_AGE}`,
   ];
-  if (process.env.NODE_ENV === 'production') parts.push('Secure');
+  if (crossSite) parts.push('Secure');
   res.setHeader('Set-Cookie', parts.join('; '));
 }
 
 export function clearCookie(res) {
-  res.setHeader('Set-Cookie', `${COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`);
+  // Must match the attributes used when the cookie was issued, or the browser
+  // keeps the old one and sign out silently does nothing inside the frame.
+  const crossSite = process.env.NODE_ENV === 'production';
+  const parts = [
+    `${COOKIE}=`,
+    'Path=/',
+    'HttpOnly',
+    crossSite ? 'SameSite=None' : 'SameSite=Lax',
+    'Max-Age=0',
+  ];
+  if (crossSite) parts.push('Secure');
+  res.setHeader('Set-Cookie', parts.join('; '));
 }
 
 /** Returns { name } for a valid session, or null. */
