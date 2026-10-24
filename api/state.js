@@ -1,17 +1,25 @@
 import { sql, ensureSchema } from './_db.js';
 import { requireSession } from './_auth.js';
+import { validYear, DEFAULT_YEAR } from './_years.js';
 
 export default async function handler(req, res) {
   if (!requireSession(req, res)) return;
   await ensureSchema();
 
-  const [entries, files] = await Promise.all([
+  const year = validYear(req.query.year) || DEFAULT_YEAR;
+
+  const [entries, files, counts] = await Promise.all([
     sql`SELECT metric_no, response, comment, justification, proof, action_plan,
                updated_by, updated_at
-        FROM entries ORDER BY metric_no`,
+        FROM entries WHERE year = ${year} ORDER BY metric_no`,
     sql`SELECT id, metric_no, url, filename, bytes, uploaded_by, uploaded_at
-        FROM attachments ORDER BY metric_no, uploaded_at`,
+        FROM attachments WHERE year = ${year} ORDER BY metric_no, uploaded_at`,
+    // one number per year, so every tab can show its progress
+    sql`SELECT year, COUNT(*) FILTER (WHERE response <> '') AS answered
+        FROM entries GROUP BY year`,
   ]);
+  const byYear = {};
+  for (const c of counts) byYear[c.year] = Number(c.answered);
 
   const byMetric = {};
   for (const e of entries) {
@@ -35,5 +43,5 @@ export default async function handler(req, res) {
   }
 
   res.setHeader('Cache-Control', 'no-store');
-  res.json({ entries: byMetric, serverTime: new Date().toISOString() });
+  res.json({ year, entries: byMetric, counts: byYear, serverTime: new Date().toISOString() });
 }

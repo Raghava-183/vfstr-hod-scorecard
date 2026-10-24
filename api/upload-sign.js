@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
 import { requireSession } from './_auth.js';
+import { validYear } from './_years.js';
 
 /**
  * Returns a short-lived Cloudinary signature. The browser uploads the file
@@ -19,9 +20,11 @@ export default function handler(req, res) {
 
   const no = parseInt((req.body || {}).metricNo, 10);
   if (!Number.isInteger(no)) return res.status(400).json({ error: 'Invalid metric number' });
+  const year = validYear((req.body || {}).year);
+  if (!year) return res.status(400).json({ error: 'Unknown academic year' });
 
   const timestamp = Math.floor(Date.now() / 1000);
-  const folder = `scorecard-2025-26/metric-${String(no).padStart(3, '0')}`;
+  const folder = `scorecard-${year}/metric-${String(no).padStart(3, '0')}`;
 
   // Cloudinary signs the alphabetically sorted params, secret appended.
   const toSign = `folder=${folder}&timestamp=${timestamp}`;

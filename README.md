@@ -6,6 +6,9 @@ A shared web app where faculty enter Justification, Proof and Action plan agains
 of the 114 scorecard metrics. Everything saves to one department database, so whoever
 opens the link sees the current state.
 
+Holds more than one academic year. Tabs at the top switch between them; each year keeps
+its own responses, comments, justifications, proofs, action plans and uploaded files.
+
 ---
 
 ## What you need
@@ -59,7 +62,8 @@ In Vercel: **Settings → Environment Variables**. Add these five
 
 | Name | Value |
 |---|---|
-| `DEPT_PASSWORD` | The password you give faculty. Use a long passphrase. |
+| `DEPT_USERNAME` | The shared username faculty type. Defaults to `213` if unset. |
+| `DEPT_PASSWORD` | The shared password you give faculty. |
 | `SESSION_SECRET` | Any long random string — run `openssl rand -base64 32` |
 | `CLOUDINARY_CLOUD_NAME` | from the Cloudinary dashboard |
 | `CLOUDINARY_API_KEY` | from the Cloudinary dashboard |
@@ -86,10 +90,44 @@ sign-in, and that name is stamped on everything they save.
 
 ---
 
+## Academic years
+
+Tabs under the banner switch year. The metrics, portfolios and the four band
+thresholds are identical across years — only what faculty enter differs. The badge on
+each tab counts how many of the 114 responses that year holds.
+
+- **2025-26** opens with the figures imported from the workbook.
+- **2026-27** starts completely empty and fills in as faculty enter it.
+
+Both years stay editable, so a correction to last year is still possible. Nothing a
+faculty member types in one year can affect the other: each metric is a separate
+database row per year.
+
+### Opening a further year
+
+1. Add the id to `YEARS` in `api/_years.js`.
+2. Add a matching entry to `meta.years` in `public/metrics.json` **and**
+   `data/metrics.json`, with `"seeded": false` so its responses start empty.
+3. Redeploy. No database work is needed — the new year's rows appear as they are saved.
+
+Both lists must agree: `_years.js` guards the API, `metrics.json` builds the tabs.
+
+### Upgrading an existing deployment
+
+The first request after deploying migrates the database automatically: it adds a `year`
+column to `entries`, `attachments` and `history`, stamps every existing row `2025-26`,
+and changes the `entries` primary key from `metric_no` to `(year, metric_no)`. Existing
+entries, uploads and edit history are preserved exactly. The migration runs once and is
+skipped on every later request.
+
 ## How it behaves
 
-**Signing in.** One shared department password, plus the person's own name. The name
-is what appears in "Last saved by", so faculty should use their real one.
+**Switching year.** The tabs reload that year from the database. The page never carries
+one year's typing into another.
+
+**Signing in.** One shared username and password for the whole department, plus the
+person's own name. The name is what appears in "Last saved by", so faculty should use
+their real one. If left blank it falls back to the username.
 
 **Editing.** Response and Comments are editable directly in the sheet and save
 automatically about a second after typing stops. Clicking a row opens that metric's
@@ -114,8 +152,12 @@ read from the Beginning cell: `< 85` means higher is better, `> 24` means lower 
 better. Change a response and the band, comment, totals, donut and section bars all
 update at once.
 
-**CSV.** Exports every column plus Justification, Proof, Action plan, file links and
-who last saved each row — ready to paste back into the workbook.
+**CSV.** Exports the year currently on screen — every column plus Justification, Proof,
+Action plan, file links and who last saved each row, ready to paste back into the
+workbook. The file is named for its year.
+
+**Links.** `#2026-27` opens that year, `#2026-27/m45` opens metric 45 within it, so a
+specific row can be sent to a colleague.
 
 ---
 
@@ -123,7 +165,8 @@ who last saved each row — ready to paste back into the workbook.
 
 ```
 api/            serverless functions
-  _db.js        Neon connection, schema, helpers
+  _years.js     the academic years the API accepts
+  _db.js        Neon connection, schema, migration, helpers
   _auth.js      signed session cookie
   login.js      password check, throttled per IP
   state.js      all saved entries and attachments
@@ -150,4 +193,6 @@ scripts/seed.mjs  one-off import of workbook responses
 - The app is marked `noindex`, but a shared password is a shared password. It is
   appropriate for internal departmental data, not for anything confidential.
 - To correct a metric's wording or thresholds, edit `public/metrics.json` and
-  redeploy. Saved entries are keyed by metric number and are unaffected.
+  redeploy. Saved entries are keyed by year and metric number and are unaffected.
+- Every change is recorded per year, so `GET /api/history?year=2026-27&metricNo=45`
+  returns that metric's log for that year alone.

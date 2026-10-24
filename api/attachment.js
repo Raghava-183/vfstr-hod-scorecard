@@ -1,6 +1,7 @@
 import crypto from 'node:crypto';
 import { sql, ensureSchema } from './_db.js';
 import { requireSession } from './_auth.js';
+import { validYear } from './_years.js';
 
 export default async function handler(req, res) {
   const session = requireSession(req, res);
@@ -12,16 +13,18 @@ export default async function handler(req, res) {
     const no = parseInt(b.metricNo, 10);
     if (!Number.isInteger(no)) return res.status(400).json({ error: 'Invalid metric number' });
     if (!b.url || !b.publicId) return res.status(400).json({ error: 'Missing upload details' });
+    const year = validYear(b.year);
+    if (!year) return res.status(400).json({ error: 'Unknown academic year' });
 
     const [row] = await sql`
-      INSERT INTO attachments (metric_no, url, public_id, resource_type, filename, bytes, uploaded_by)
-      VALUES (${no}, ${String(b.url)}, ${String(b.publicId)},
+      INSERT INTO attachments (year, metric_no, url, public_id, resource_type, filename, bytes, uploaded_by)
+      VALUES (${year}, ${no}, ${String(b.url)}, ${String(b.publicId)},
               ${String(b.resourceType || 'auto')}, ${String(b.filename || '').slice(0, 200)},
               ${Number(b.bytes) || 0}, ${session.name})
       RETURNING id, metric_no, url, filename, bytes, uploaded_by, uploaded_at`;
     await sql`
-      INSERT INTO history (metric_no, field, old_value, new_value, changed_by)
-      VALUES (${no}, 'attachment', '', ${String(b.filename || b.url)}, ${session.name})`;
+      INSERT INTO history (year, metric_no, field, old_value, new_value, changed_by)
+      VALUES (${year}, ${no}, 'attachment', '', ${String(b.filename || b.url)}, ${session.name})`;
     return res.json({
       ok: true,
       file: { id: row.id, url: row.url, filename: row.filename,
@@ -59,8 +62,8 @@ export default async function handler(req, res) {
 
     await sql`DELETE FROM attachments WHERE id = ${id}`;
     await sql`
-      INSERT INTO history (metric_no, field, old_value, new_value, changed_by)
-      VALUES (${row.metric_no}, 'attachment', ${row.filename || row.url}, '', ${session.name})`;
+      INSERT INTO history (year, metric_no, field, old_value, new_value, changed_by)
+      VALUES (${row.year}, ${row.metric_no}, 'attachment', ${row.filename || row.url}, '', ${session.name})`;
     return res.json({ ok: true });
   }
 

@@ -29,6 +29,14 @@
 <div class="bannerimg" role="img" aria-label="Department of Computer Applications, School of Computing and Informatics — Vignan's Foundation for Science, Technology and Research"></div>
 <div class="rails"></div>
 
+<nav class="yearbar" aria-label="Academic year">
+  <div class="wrap yearbar-in">
+    <span class="yearbar-label">Academic year</span>
+    <div class="yeartabs" id="yeartabs" role="tablist"></div>
+    <span class="yearbar-note" id="year-note"></span>
+  </div>
+</nav>
+
 <div id="view-sheet">
 <header class="title">
   <div class="wrap title-in">
@@ -36,7 +44,7 @@
       <div class="kicker">Head of Department · Annual Score Card</div>
       <div class="who" style="margin-top:8px">Signed in as <b id="who-name"></b>
         <button type="button" id="btn-signout">Sign out</button></div>
-      <h1>HoD's Score Card <em>2025-26</em></h1>
+      <h1>HoD's Score Card <em id="t-year">2025-26</em></h1>
       <p class="title-sub" id="t-sub"></p>
       <div class="pills" id="pills"></div>
     </div>
@@ -78,7 +86,7 @@
 <main class="wrap">
   <div class="sheet-head">
     <div><h2>Score card sheet</h2>
-      <p>Every metric as recorded in the workbook. The shaded cell on each row is the band the response lands in.</p></div>
+      <p id="sheet-note">Every metric as recorded in the workbook. The shaded cell on each row is the band the response lands in.</p></div>
     <div class="legend" id="legend"></div>
   </div>
 

@@ -3,7 +3,19 @@
   "school": "School of Computing and Informatics",
   "dept": "Computer Applications",
   "year": "2025-26",
-  "total": 114
+  "total": 114,
+  "years": [
+   {
+    "id": "2025-26",
+    "label": "2025-26",
+    "seeded": true
+   },
+   {
+    "id": "2026-27",
+    "label": "2026-27",
+    "seeded": false
+   }
+  ]
  },
  "sections": [
   {

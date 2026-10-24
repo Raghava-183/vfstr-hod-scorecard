@@ -1,5 +1,6 @@
 import { sql, ensureSchema } from './_db.js';
 import { requireSession } from './_auth.js';
+import { validYear } from './_years.js';
 
 const FIELDS = [
   ['response', 'response'],
@@ -20,11 +21,14 @@ export default async function handler(req, res) {
   if (!Number.isInteger(no) || no < 1 || no > 500) {
     return res.status(400).json({ error: 'Invalid metric number' });
   }
+  const year = validYear(body.year);
+  if (!year) return res.status(400).json({ error: 'Unknown academic year' });
 
   const next = {};
   for (const [key] of FIELDS) next[key] = String(body[key] ?? '').slice(0, 20000);
 
-  const [current] = await sql`SELECT * FROM entries WHERE metric_no = ${no}`;
+  const [current] = await sql`
+    SELECT * FROM entries WHERE year = ${year} AND metric_no = ${no}`;
 
   // Someone else saved this metric since the page loaded it.
   if (!body.force && current && body.baseUpdatedAt) {
@@ -47,10 +51,10 @@ export default async function handler(req, res) {
   }
 
   const [saved] = await sql`
-    INSERT INTO entries (metric_no, response, comment, justification, proof, action_plan, updated_by, updated_at)
-    VALUES (${no}, ${next.response}, ${next.comment}, ${next.justification},
+    INSERT INTO entries (year, metric_no, response, comment, justification, proof, action_plan, updated_by, updated_at)
+    VALUES (${year}, ${no}, ${next.response}, ${next.comment}, ${next.justification},
             ${next.proof}, ${next.actionPlan}, ${session.name}, now())
-    ON CONFLICT (metric_no) DO UPDATE SET
+    ON CONFLICT (year, metric_no) DO UPDATE SET
       response = EXCLUDED.response, comment = EXCLUDED.comment,
       justification = EXCLUDED.justification, proof = EXCLUDED.proof,
       action_plan = EXCLUDED.action_plan,
@@ -62,10 +66,10 @@ export default async function handler(req, res) {
     const before = current ? String(current[col] ?? '') : '';
     if (before !== next[key]) {
       await sql`
-        INSERT INTO history (metric_no, field, old_value, new_value, changed_by)
-        VALUES (${no}, ${key}, ${before.slice(0, 4000)}, ${next[key].slice(0, 4000)}, ${session.name})`;
+        INSERT INTO history (year, metric_no, field, old_value, new_value, changed_by)
+        VALUES (${year}, ${no}, ${key}, ${before.slice(0, 4000)}, ${next[key].slice(0, 4000)}, ${session.name})`;
     }
   }
 
-  res.json({ ok: true, updatedBy: saved.updated_by, updatedAt: saved.updated_at });
+  res.json({ ok: true, year, updatedBy: saved.updated_by, updatedAt: saved.updated_at });
 }

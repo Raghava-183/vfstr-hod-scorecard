@@ -59,6 +59,15 @@ let DATA = null, T = 0, ME = '';
 const ROWS = [], SEC = {}, byNo = {}, trOf = {}, tickOf = {};
 let pollTimer = null;
 
+/* ---------------- academic year ----------------
+   One set of 114 metrics, one row per metric per year in the database.
+   A "seeded" year starts from the responses in metrics.json; any other
+   year starts empty and fills up as faculty enter it. */
+let YEARS = [], YEAR = '', YEAR_COUNTS = {};
+const yearDef = y => YEARS.find(x => x.id === (y || YEAR)) || null;
+const isSeeded = () => !!(yearDef() && yearDef().seeded);
+const baselineOf = r => (isSeeded() ? (r.seedResponse || '') : '');
+
 const tally = list => {
   const c = { beginning:0, developing:0, proficient:0, exemplary:0, unrated:0 };
   list.forEach(r => c[r.band]++); return c;
@@ -122,31 +131,112 @@ async function boot() {
   DATA = await (await fetch('/metrics.json')).json();
   T = DATA.meta.total;
 
+  YEARS = DATA.meta.years && DATA.meta.years.length
+    ? DATA.meta.years
+    : [{ id: DATA.meta.year, label: DATA.meta.year, seeded: true }];
+
   ROWS.length = 0;
   DATA.sections.forEach(s => {
     const id = slug(s.name);
     SEC[id] = { name: s.name, note: s.note, rows: [] };
     s.rows.forEach(r => {
-      r.sec = id; r.orig = r.response;
+      r.sec = id;
+      r.seedResponse = r.response;   // the workbook figure, kept for seeded years
       r.note = ''; r.just = ''; r.proof = ''; r.action = '';
       r.files = []; r.updatedBy = ''; r.updatedAt = null;
-      r.band = scoreRow(r);
       ROWS.push(r); SEC[id].rows.push(r); byNo[r.no] = r;
     });
   });
 
+  const opened = readHash();
+  YEAR = opened.year || DATA.meta.year || YEARS[0].id;
+  if (!yearDef()) YEAR = YEARS[0].id;
+
+  resetRowsForYear();
   buildShell();
+  buildYearTabs();
+  applyYearChrome();
   await pullState();
   $('shell').hidden = false;
   $('who-name').textContent = ME;
+  if (opened.metric && byNo[opened.metric]) openDetail(byNo[opened.metric]);
   pollTimer = setInterval(() => { if (vDetail.hidden && !document.hidden) pullState(true); }, 45000);
+}
+
+/** Clears every row back to the chosen year's starting point. */
+function resetRowsForYear() {
+  ROWS.forEach(r => {
+    r.response = baselineOf(r);
+    r.orig = r.response;
+    r.note = ''; r.just = ''; r.proof = ''; r.action = '';
+    r.files = []; r.updatedBy = ''; r.updatedAt = null;
+    r.band = scoreRow(r);
+  });
+}
+
+/* ---------------- year tabs ---------------- */
+function buildYearTabs() {
+  $('yeartabs').innerHTML = YEARS.map(y => `
+    <button class="yeartab" role="tab" data-year="${esc(y.id)}"
+            aria-selected="${y.id === YEAR}">${esc(y.label || y.id)}<span class="dot"
+            data-year="${esc(y.id)}" title="responses entered">0</span></button>`).join('');
+  $('yeartabs').onclick = e => {
+    const b = e.target.closest('.yeartab');
+    if (b && b.dataset.year !== YEAR) switchYear(b.dataset.year);
+  };
+}
+
+/** Text and headings that name the year. */
+function applyYearChrome() {
+  $('t-year').textContent = YEAR;
+  document.querySelectorAll('.yeartab').forEach(b =>
+    b.setAttribute('aria-selected', b.dataset.year === YEAR));
+  $('sheet-note').textContent = isSeeded()
+    ? 'Every metric as recorded in the workbook. The shaded cell on each row is the band the response lands in.'
+    : `The same ${T} metrics and the same targets. Responses start empty for ${YEAR} — enter them as the year progresses and the bands fill in.`;
+  document.title = `HoD's Score Card ${YEAR} — Computer Applications, VFSTR`;
+}
+
+async function switchYear(y) {
+  if (!YEARS.some(x => x.id === y)) return;
+  if (!vDetail.hidden) closeDetail();
+  Object.values(saveTimers).forEach(clearTimeout);
+  YEAR = y;
+  resetRowsForYear();
+  ROWS.forEach(r => {
+    const tr = trOf[r.no];
+    if (tr) { tr.querySelector('.r-in').value = r.response; tr.querySelector('.c-in').value = ''; }
+    paintRow(r, false);
+  });
+  applyYearChrome();
+  buildFlags();
+  repaint(); applyFilter();
+  writeHash();
+  await pullState();
+}
+
+/* ---------------- address bar ----------------
+   #2026-27 opens that year; #2026-27/m45 opens metric 45 in it. */
+function readHash() {
+  const h = decodeURIComponent(location.hash.replace(/^#/, ''));
+  if (!h) return {};
+  const m = h.match(/^(?:([0-9]{4}-[0-9]{2}))?\/?(?:m([0-9]+))?$/);
+  if (!m) return {};
+  return { year: m[1] || '', metric: m[2] ? parseInt(m[2], 10) : 0 };
+}
+function writeHash(metricNo) {
+  const h = '#' + YEAR + (metricNo ? '/m' + metricNo : '');
+  history.replaceState(null, '', h);
 }
 
 /** Merge server entries into the local model. */
 async function pullState(quiet) {
   if (!quiet) setSync('busy', 'Loading…');
+  const asked = YEAR;
   try {
-    const { entries } = await api('/api/state');
+    const { entries, counts } = await api('/api/state?year=' + encodeURIComponent(asked));
+    if (asked !== YEAR) return;        // the year changed while this was in flight
+    if (counts) YEAR_COUNTS = { ...YEAR_COUNTS, ...counts };
     ROWS.forEach(r => {
       const e = entries[r.no];
       if (!e) return;
@@ -176,7 +266,6 @@ function buildShell() {
   $('t-sub').textContent =
     `${DATA.meta.dept} · ${DATA.meta.school}. ${T} metrics assessed across ${DATA.sections.length} areas against the four-band institutional scale.`;
   $('s-total').textContent = T;
-  $('d-n').textContent = T;
 
   const ticks = $('ticks'), labels = $('spine-labels');
   let ti = 0;
@@ -244,8 +333,20 @@ function buildSheet() {
 }
 
 function buildFlags() {
-  const diffs = ROWS.filter(r => r.wbBand && r.wbBand !== r.band);
   const el = $('diff');
+
+  // A year with no responses yet has nothing to verify, and comparing its
+  // blank bands against last year's workbook would flag all 114 rows.
+  if (!isSeeded()) {
+    el.hidden = true;
+    $('flags').innerHTML = `<div class="year-empty">
+      <h3>Nothing to verify yet for ${esc(YEAR)}</h3>
+      <p>This section lists responses that look like gaps or scoring errors. It fills in as figures are entered for ${esc(YEAR)}. Last year's checks are on the ${esc(YEARS[0].label || YEARS[0].id)} tab.</p></div>`;
+    return;
+  }
+
+  const diffs = ROWS.filter(r => r.wbBand && r.wbBand !== r.band);
+  el.hidden = false;
   if (diffs.length) {
     el.innerHTML = `<h3>${diffs.length} rows where the workbook's own scoring disagrees with its thresholds</h3>
     <p style="font-size:13px;color:var(--ink2);margin-bottom:9px">This page scores every response against the band values in the same sheet. These rows were recorded differently in the workbook, so the totals here differ from the Gist tab by that amount.</p>
@@ -284,11 +385,22 @@ function repaint() {
     <span class="pill"><b>${C.beginning + C.developing}</b> below target</span>
     <span class="pill"><b>${pc(met)}%</b> Proficient or Exemplary</span>`;
 
-  const d1 = C.beginning / T * 360, d2 = d1 + C.developing / T * 360, d3 = d2 + C.proficient / T * 360;
+  // With nothing scored every stop would be 0deg and the ring would fall
+  // through to a solid Exemplary green — an empty year must not read as a
+  // perfect one, so it shows a neutral ring instead.
+  const scored = C.beginning + C.developing + C.proficient + C.exemplary;
   const dn = $('donut');
-  dn.style.setProperty('--deg1', d1 + 'deg');
-  dn.style.setProperty('--deg2', d2 + 'deg');
-  dn.style.setProperty('--deg3', d3 + 'deg');
+  dn.classList.toggle('empty', scored === 0);
+  if (scored === 0) {
+    dn.style.setProperty('--deg1', '0deg');
+    dn.style.setProperty('--deg2', '0deg');
+    dn.style.setProperty('--deg3', '0deg');
+  } else {
+    const d1 = C.beginning / T * 360, d2 = d1 + C.developing / T * 360, d3 = d2 + C.proficient / T * 360;
+    dn.style.setProperty('--deg1', d1 + 'deg');
+    dn.style.setProperty('--deg2', d2 + 'deg');
+    dn.style.setProperty('--deg3', d3 + 'deg');
+  }
 
   document.querySelectorAll('.card').forEach(card => {
     const b = card.dataset.band;
@@ -315,6 +427,19 @@ function repaint() {
   const dp = $('doc-count');
   dp.textContent = `${dc} of ${T} documented`;
   dp.style.background = dc ? 'var(--exemplary-i)' : 'var(--ink3)';
+
+  const answered = ROWS.filter(r => String(r.response).trim() !== '').length;
+  $('d-n').textContent = answered;          // the donut counts responses, not rows
+  const note = $('year-note');
+  if (note) {
+    note.innerHTML = answered === T
+      ? `<b>All ${T}</b> responses entered`
+      : `<b>${answered}</b> of ${T} responses entered`;
+  }
+  YEAR_COUNTS[YEAR] = answered;              // live while the active year is typed into
+  document.querySelectorAll('.yeartab .dot').forEach(d => {
+    d.textContent = YEAR_COUNTS[d.dataset.year] ?? 0;
+  });
 }
 
 /* ---------------- inline editing ---------------- */
@@ -329,6 +454,7 @@ async function saveMetric(r, force) {
   try {
     setSync('busy', 'Saving…');
     const out = await api('/api/entry', { method: 'POST', body: {
+      year: YEAR,
       metricNo: r.no, response: r.response, comment: r.note,
       justification: r.just, proof: r.proof, actionPlan: r.action,
       baseUpdatedAt: r.updatedAt, force: !!force } });
@@ -449,13 +575,13 @@ function openDetail(r) {
     : 'No entry saved for this metric yet.';
   setStatus(documented(r) ? 'Saved entry on file for this metric.' : '', 'ok');
   vSheet.hidden = true; vDetail.hidden = false;
-  history.replaceState(null, '', '#m' + r.no);
+  writeHash(r.no);
   window.scrollTo(0, 0); fJust.focus({ preventScroll: true });
 }
 
 function closeDetail() {
   vDetail.hidden = true; vSheet.hidden = false;
-  history.replaceState(null, '', location.pathname);
+  writeHash();
   const tr = cur ? trOf[cur.no] : null; cur = null;
   window.scrollTo(0, scrollBack);
   if (tr) { tr.classList.remove('flash'); void tr.offsetWidth; tr.classList.add('flash'); }
@@ -544,7 +670,7 @@ async function upload(file) {
   bar.style.width = '5%';
   setStatus('Uploading ' + file.name + '…', 'warn');
   try {
-    const sig = await api('/api/upload-sign', { method: 'POST', body: { metricNo: cur.no } });
+    const sig = await api('/api/upload-sign', { method: 'POST', body: { year: YEAR, metricNo: cur.no } });
     const form = new FormData();
     form.append('file', file);
     form.append('api_key', sig.apiKey);
@@ -567,7 +693,7 @@ async function upload(file) {
 
     bar.style.width = '100%';
     const saved = await api('/api/attachment', { method: 'POST', body: {
-      metricNo: cur.no, url: up.secure_url, publicId: up.public_id,
+      year: YEAR, metricNo: cur.no, url: up.secure_url, publicId: up.public_id,
       resourceType: up.resource_type, filename: file.name, bytes: up.bytes } });
     cur.files.push(saved.file);
     renderFiles(cur); paintRow(cur, false); repaint();
@@ -598,7 +724,7 @@ $('btn-csv').onclick = () => {
   });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' }));
-  a.download = 'hod-scorecard-2025-26.csv';
+  a.download = `hod-scorecard-${YEAR}.csv`;
   a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 4000);
 };
@@ -610,7 +736,7 @@ let slides = [], idx = 0;
 function buildSlides() {
   slides = [{ label: 'Overview', render: () => {
     const C = tally(ROWS);
-    return `<div class="p-eyebrow">${esc(DATA.meta.school)} · ${esc(DATA.meta.year)}</div>
+    return `<div class="p-eyebrow">${esc(DATA.meta.school)} · ${esc(YEAR)}</div>
     <h2>${esc(DATA.meta.dept)} — HoD's Score Card</h2>
     <p class="p-note">${T} metrics across ${DATA.sections.length} areas, scored against the four-band scale.</p>
     <div class="p-big">${BANDS.map(b => `<div style="--c:${cv(b)}">
@@ -675,8 +801,8 @@ document.addEventListener('keydown', e => {
 });
 
 window.addEventListener('hashchange', () => {
-  if (location.hash.startsWith('#m') && DATA) {
-    const r = byNo[location.hash.slice(2)];
-    if (r) openDetail(r);
-  }
+  if (!DATA) return;
+  const h = readHash();
+  if (h.year && h.year !== YEAR && YEARS.some(y => y.id === h.year)) { switchYear(h.year); return; }
+  if (h.metric && byNo[h.metric]) openDetail(byNo[h.metric]);
 });
