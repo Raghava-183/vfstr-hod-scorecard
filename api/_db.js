@@ -16,10 +16,14 @@ let ready = null;
 export function ensureSchema() {
   if (!ready) {
     ready = (async () => {
+      // Postgres rejects bind parameters in DDL, so nothing below may use
+      // ${...} interpolation — the year is always supplied explicitly by the
+      // application on insert, so these columns need no default at all.
+
       // ---- fresh install: already multi-year ----
       await sql`
         CREATE TABLE IF NOT EXISTS entries (
-          year          TEXT NOT NULL DEFAULT ${DEFAULT_YEAR},
+          year          TEXT NOT NULL,
           metric_no     INTEGER NOT NULL,
           response      TEXT NOT NULL DEFAULT '',
           comment       TEXT NOT NULL DEFAULT '',
@@ -33,7 +37,7 @@ export function ensureSchema() {
       await sql`
         CREATE TABLE IF NOT EXISTS attachments (
           id            BIGSERIAL PRIMARY KEY,
-          year          TEXT NOT NULL DEFAULT ${DEFAULT_YEAR},
+          year          TEXT NOT NULL,
           metric_no     INTEGER NOT NULL,
           url           TEXT NOT NULL,
           public_id     TEXT NOT NULL,
@@ -46,7 +50,7 @@ export function ensureSchema() {
       await sql`
         CREATE TABLE IF NOT EXISTS history (
           id         BIGSERIAL PRIMARY KEY,
-          year       TEXT NOT NULL DEFAULT ${DEFAULT_YEAR},
+          year       TEXT NOT NULL,
           metric_no  INTEGER NOT NULL,
           field      TEXT NOT NULL,
           old_value  TEXT NOT NULL DEFAULT '',
@@ -62,8 +66,9 @@ export function ensureSchema() {
         )`;
 
       // ---- existing single-year database: add the year column ----
-      // Rows already stored were all entered against DEFAULT_YEAR, so the
-      // column default stamps them correctly and nothing is lost.
+      // Rows already stored were all entered against DEFAULT_YEAR. The column
+      // is added nullable, every existing row is stamped by an UPDATE (where a
+      // parameter is allowed), and only then made NOT NULL.
       const cols = await sql`
         SELECT table_name, column_name
         FROM information_schema.columns
@@ -72,16 +77,22 @@ export function ensureSchema() {
       const has = (t, c) => cols.some(x => x.table_name === t && x.column_name === c);
 
       if (!has('entries', 'year')) {
-        await sql`ALTER TABLE entries ADD COLUMN year TEXT NOT NULL DEFAULT ${DEFAULT_YEAR}`;
+        await sql`ALTER TABLE entries ADD COLUMN year TEXT`;
+        await sql`UPDATE entries SET year = ${DEFAULT_YEAR} WHERE year IS NULL`;
+        await sql`ALTER TABLE entries ALTER COLUMN year SET NOT NULL`;
         // metric_no alone was the primary key; the pair is now what is unique.
         await sql`ALTER TABLE entries DROP CONSTRAINT IF EXISTS entries_pkey`;
         await sql`ALTER TABLE entries ADD CONSTRAINT entries_pkey PRIMARY KEY (year, metric_no)`;
       }
       if (!has('attachments', 'year')) {
-        await sql`ALTER TABLE attachments ADD COLUMN year TEXT NOT NULL DEFAULT ${DEFAULT_YEAR}`;
+        await sql`ALTER TABLE attachments ADD COLUMN year TEXT`;
+        await sql`UPDATE attachments SET year = ${DEFAULT_YEAR} WHERE year IS NULL`;
+        await sql`ALTER TABLE attachments ALTER COLUMN year SET NOT NULL`;
       }
       if (!has('history', 'year')) {
-        await sql`ALTER TABLE history ADD COLUMN year TEXT NOT NULL DEFAULT ${DEFAULT_YEAR}`;
+        await sql`ALTER TABLE history ADD COLUMN year TEXT`;
+        await sql`UPDATE history SET year = ${DEFAULT_YEAR} WHERE year IS NULL`;
+        await sql`ALTER TABLE history ALTER COLUMN year SET NOT NULL`;
       }
 
       await sql`CREATE INDEX IF NOT EXISTS attachments_year_metric_idx
