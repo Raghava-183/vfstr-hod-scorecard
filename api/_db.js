@@ -1,8 +1,14 @@
 import { neon } from '@neondatabase/serverless';
 import { DEFAULT_YEAR } from './_years.js';
 
-const url = process.env.DATABASE_URL;
-if (!url) console.error('DATABASE_URL is not set. Add the Neon integration in Vercel.');
+// When Neon was connected to this project a "DATABASE" custom prefix was
+// typed, so Vercel named the connection string Database_DATABASE_URL rather
+// than DATABASE_URL. Both names are read, prefixed first. Do not remove
+// either one: dropping the prefixed name takes the database offline.
+const url = process.env.Database_DATABASE_URL || process.env.DATABASE_URL;
+if (!url) {
+  console.error('No database connection string. Expected Database_DATABASE_URL or DATABASE_URL in the Vercel project.');
+}
 
 export const sql = neon(url);
 
