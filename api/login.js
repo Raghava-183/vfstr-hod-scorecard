@@ -6,6 +6,20 @@ const MAX_FAILS = 8;
 const WINDOW_MIN = 15;
 
 export default async function handler(req, res) {
+  try {
+    return await login(req, res);
+  } catch (err) {
+    // Without this an exception becomes a bare 500 with no body, and the only
+    // place the reason appears is the hosting dashboard. Reporting it here
+    // means whoever is signing in can read what actually went wrong.
+    console.error('login failed:', err);
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Server error: ' + (err && err.message ? err.message : String(err)) });
+    }
+  }
+}
+
+async function login(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const expected = process.env.DEPT_PASSWORD;

@@ -3,6 +3,17 @@ import { requireSession } from './_auth.js';
 import { validYear, DEFAULT_YEAR } from './_years.js';
 
 export default async function handler(req, res) {
+  try {
+    return await state(req, res);
+  } catch (err) {
+    console.error('state failed:', err);
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Server error: ' + (err && err.message ? err.message : String(err)) });
+    }
+  }
+}
+
+async function state(req, res) {
   if (!requireSession(req, res)) return;
   await ensureSchema();
 
