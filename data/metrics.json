@@ -33,7 +33,8 @@
      "proficient": "95",
      "exemplary": "100",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "Dr. N. Veeranjaneyulu, Dr. K. Santhi Sri"
     },
     {
      "no": 2,
@@ -46,7 +47,8 @@
      "proficient": "20",
      "exemplary": "24",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "Dr. N. Veeranjaneyulu, Dr. K. Santhi Sri"
     },
     {
      "no": 3,
@@ -59,7 +61,8 @@
      "proficient": "4",
      "exemplary": "5",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Dr. N. Veeranjaneyulu, Dr. K. Santhi Sri"
     },
     {
      "no": 4,
@@ -72,7 +75,8 @@
      "proficient": "25",
      "exemplary": "33",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Dr. N. Veeranjaneyulu, Dr. K. Santhi Sri"
     },
     {
      "no": 5,
@@ -85,7 +89,8 @@
      "proficient": "40",
      "exemplary": "50",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Dr. N. Veeranjaneyulu, Dr. K. Santhi Sri"
     },
     {
      "no": 6,
@@ -98,7 +103,8 @@
      "proficient": "2",
      "exemplary": "3",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "Dr. N. Veeranjaneyulu, Dr. K. Santhi Sri"
     },
     {
      "no": 7,
@@ -111,7 +117,8 @@
      "proficient": "0.3",
      "exemplary": "0.2",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Dr. N. Veeranjaneyulu, Dr. K. Santhi Sri"
     }
    ]
   },
@@ -130,7 +137,8 @@
      "proficient": "95",
      "exemplary": "100",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Dr. K. Santhi Sri"
     },
     {
      "no": 9,
@@ -143,7 +151,8 @@
      "proficient": "0.75",
      "exemplary": "1",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mrs. Lakshmi Thanuja kota"
     },
     {
      "no": 10,
@@ -156,7 +165,8 @@
      "proficient": "80",
      "exemplary": "100",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mrs. Lakshmi Thanuja kota"
     },
     {
      "no": 11,
@@ -169,7 +179,8 @@
      "proficient": "90",
      "exemplary": "100",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "Mrs. R. Naga Sirisha"
     },
     {
      "no": 12,
@@ -182,7 +193,8 @@
      "proficient": "95",
      "exemplary": "100",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "Mrs. R. Naga Sirisha"
     },
     {
      "no": 13,
@@ -195,7 +207,8 @@
      "proficient": "15",
      "exemplary": "10",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "Ms. T. Sri Vyshnavi"
     },
     {
      "no": 14,
@@ -208,7 +221,8 @@
      "proficient": "4",
      "exemplary": "5",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mrs. Lakshmi Thanuja kota"
     },
     {
      "no": 15,
@@ -221,7 +235,8 @@
      "proficient": "3",
      "exemplary": "4",
      "band": "developing",
-     "wbBand": "developing"
+     "wbBand": "developing",
+     "faculty": "Mr. A. Siva Rao"
     },
     {
      "no": 16,
@@ -234,7 +249,8 @@
      "proficient": "3",
      "exemplary": "4",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mr. A. Siva Rao"
     },
     {
      "no": 17,
@@ -247,7 +263,8 @@
      "proficient": "6",
      "exemplary": "8",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "Mr. A. Siva Rao"
     },
     {
      "no": 18,
@@ -260,7 +277,8 @@
      "proficient": "70",
      "exemplary": "80",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mr. A. Siva Rao"
     },
     {
      "no": 19,
@@ -273,7 +291,8 @@
      "proficient": "90",
      "exemplary": "100",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "Mr. Raghavendra Murali"
     },
     {
      "no": 20,
@@ -286,7 +305,8 @@
      "proficient": "20",
      "exemplary": "30",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mr. Raghavendra Murali"
     },
     {
      "no": 21,
@@ -299,7 +319,8 @@
      "proficient": "80",
      "exemplary": "85",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Ms. T. Sri Vyshnavi"
     },
     {
      "no": 22,
@@ -312,7 +333,8 @@
      "proficient": "90",
      "exemplary": "95",
      "band": "developing",
-     "wbBand": "developing"
+     "wbBand": "developing",
+     "faculty": "Ms. T. Sri Vyshnavi"
     },
     {
      "no": 23,
@@ -325,7 +347,8 @@
      "proficient": "60",
      "exemplary": "70",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Ms. T. Sri Vyshnavi"
     },
     {
      "no": 24,
@@ -338,7 +361,8 @@
      "proficient": "7.5",
      "exemplary": "8",
      "band": "developing",
-     "wbBand": "developing"
+     "wbBand": "developing",
+     "faculty": "Ms. T. Sri Vyshnavi"
     },
     {
      "no": 25,
@@ -351,7 +375,8 @@
      "proficient": "7.5",
      "exemplary": "8",
      "band": "developing",
-     "wbBand": "developing"
+     "wbBand": "developing",
+     "faculty": "Ms. T. Sri Vyshnavi"
     },
     {
      "no": 26,
@@ -364,7 +389,8 @@
      "proficient": "8",
      "exemplary": "8.5",
      "band": "developing",
-     "wbBand": "developing"
+     "wbBand": "developing",
+     "faculty": "Ms. T. Sri Vyshnavi"
     },
     {
      "no": 27,
@@ -377,7 +403,8 @@
      "proficient": "8",
      "exemplary": "8.5",
      "band": "unrated",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "NA"
     },
     {
      "no": 28,
@@ -390,7 +417,8 @@
      "proficient": "85",
      "exemplary": "90",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "Ms. T. Sri Vyshnavi"
     },
     {
      "no": 29,
@@ -403,7 +431,8 @@
      "proficient": "95",
      "exemplary": "100",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mr. Raghavendra Murali"
     },
     {
      "no": 30,
@@ -416,7 +445,8 @@
      "proficient": "1",
      "exemplary": "2",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 31,
@@ -429,7 +459,8 @@
      "proficient": "90",
      "exemplary": "100",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mr. Irfan Sayyad"
     }
    ]
   },
@@ -448,7 +479,8 @@
      "proficient": "96",
      "exemplary": "100",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mrs. R. Swathika"
     },
     {
      "no": 33,
@@ -461,7 +493,8 @@
      "proficient": "15",
      "exemplary": "10",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mrs. R. Swathika"
     },
     {
      "no": 34,
@@ -474,7 +507,8 @@
      "proficient": "4",
      "exemplary": "6",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "Mrs. R. Swathika"
     },
     {
      "no": 35,
@@ -487,7 +521,8 @@
      "proficient": "6",
      "exemplary": "8",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mrs. R. Swathika"
     },
     {
      "no": 36,
@@ -500,7 +535,8 @@
      "proficient": "40",
      "exemplary": "50",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "Mrs. R. Swathika"
     },
     {
      "no": 37,
@@ -513,7 +549,8 @@
      "proficient": "40",
      "exemplary": "50",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "Mrs. R. Swathika"
     },
     {
      "no": 38,
@@ -526,7 +563,8 @@
      "proficient": "10",
      "exemplary": "15",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "Mrs. R. Swathika"
     },
     {
      "no": 39,
@@ -539,7 +577,8 @@
      "proficient": "30",
      "exemplary": "40",
      "band": "developing",
-     "wbBand": "developing"
+     "wbBand": "developing",
+     "faculty": "Mrs. R. Swathika"
     },
     {
      "no": 40,
@@ -552,7 +591,8 @@
      "proficient": "1.5",
      "exemplary": "2",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "Mrs. R. Swathika"
     },
     {
      "no": 41,
@@ -565,7 +605,8 @@
      "proficient": "2",
      "exemplary": "3",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "Mrs. R. Swathika"
     },
     {
      "no": 42,
@@ -578,7 +619,8 @@
      "proficient": "8",
      "exemplary": "10",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "Mrs. R. Swathika"
     },
     {
      "no": 43,
@@ -591,7 +633,8 @@
      "proficient": "8",
      "exemplary": "10",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 44,
@@ -604,7 +647,8 @@
      "proficient": "2",
      "exemplary": "3",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     }
    ]
   },
@@ -623,7 +667,8 @@
      "proficient": "95",
      "exemplary": "100",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "Mr. Irfan Sayyad"
     },
     {
      "no": 46,
@@ -636,7 +681,8 @@
      "proficient": "22",
      "exemplary": "20",
      "band": "beginning",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mr. Irfan Sayyad"
     },
     {
      "no": 47,
@@ -649,7 +695,8 @@
      "proficient": "22",
      "exemplary": "20",
      "band": "exemplary",
-     "wbBand": "unrated"
+     "wbBand": "unrated",
+     "faculty": "Mr. Irfan Sayyad"
     },
     {
      "no": 48,
@@ -662,7 +709,8 @@
      "proficient": "80",
      "exemplary": "90",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "Mr. Irfan Sayyad"
     },
     {
      "no": 49,
@@ -675,7 +723,8 @@
      "proficient": "8",
      "exemplary": "10",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mr. Irfan Sayyad"
     },
     {
      "no": 50,
@@ -688,7 +737,8 @@
      "proficient": "11",
      "exemplary": "15",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mr. Irfan Sayyad"
     },
     {
      "no": 51,
@@ -701,7 +751,8 @@
      "proficient": "3)1:1:7",
      "exemplary": "4)1:2:6",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mr. Irfan Sayyad"
     },
     {
      "no": 52,
@@ -714,7 +765,8 @@
      "proficient": "15",
      "exemplary": "20",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 53,
@@ -727,7 +779,8 @@
      "proficient": "20",
      "exemplary": "25",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 54,
@@ -740,7 +793,8 @@
      "proficient": "80",
      "exemplary": "85",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mr. Irfan Sayyad"
     },
     {
      "no": 55,
@@ -753,7 +807,8 @@
      "proficient": "15",
      "exemplary": "20",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "Mr. Irfan Sayyad"
     },
     {
      "no": 56,
@@ -766,7 +821,8 @@
      "proficient": "20",
      "exemplary": "30",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mr. Irfan Sayyad"
     },
     {
      "no": 57,
@@ -779,7 +835,8 @@
      "proficient": "15",
      "exemplary": "20",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mr. Irfan Sayyad"
     },
     {
      "no": 58,
@@ -792,7 +849,8 @@
      "proficient": "8",
      "exemplary": "10",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mr. Irfan Sayyad"
     },
     {
      "no": 59,
@@ -805,7 +863,8 @@
      "proficient": "80",
      "exemplary": "85",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "Mr. Irfan Sayyad"
     },
     {
      "no": 60,
@@ -818,7 +877,8 @@
      "proficient": "50",
      "exemplary": "70",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 61,
@@ -831,7 +891,8 @@
      "proficient": "4",
      "exemplary": "5",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": ""
     }
    ]
   },
@@ -850,7 +911,8 @@
      "proficient": "70",
      "exemplary": "80",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 63,
@@ -863,7 +925,8 @@
      "proficient": "60",
      "exemplary": "70",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 64,
@@ -876,7 +939,8 @@
      "proficient": "60",
      "exemplary": "70",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 65,
@@ -889,7 +953,8 @@
      "proficient": "30",
      "exemplary": "35",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 66,
@@ -902,7 +967,8 @@
      "proficient": "0.75",
      "exemplary": "1",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 67,
@@ -915,7 +981,8 @@
      "proficient": "1",
      "exemplary": "2",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "Dr. R. S. Padma Priya"
     },
     {
      "no": 68,
@@ -928,7 +995,8 @@
      "proficient": "60",
      "exemplary": "70",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 69,
@@ -941,7 +1009,8 @@
      "proficient": "90",
      "exemplary": "100",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 70,
@@ -954,7 +1023,8 @@
      "proficient": "2.5",
      "exemplary": "3",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "NA"
     },
     {
      "no": 71,
@@ -967,7 +1037,8 @@
      "proficient": "2",
      "exemplary": "3",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Dr. R. S. Padma Priya"
     },
     {
      "no": 72,
@@ -980,7 +1051,8 @@
      "proficient": "1.5",
      "exemplary": "2",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "Dr. R. S. Padma Priya"
     },
     {
      "no": 73,
@@ -993,7 +1065,8 @@
      "proficient": "2",
      "exemplary": "3",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 74,
@@ -1006,7 +1079,8 @@
      "proficient": "3",
      "exemplary": "4",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 75,
@@ -1019,7 +1093,8 @@
      "proficient": "8",
      "exemplary": "10",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 76,
@@ -1032,7 +1107,8 @@
      "proficient": "8",
      "exemplary": "10",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "Dr. R. S. Padma Priya"
     },
     {
      "no": 77,
@@ -1045,7 +1121,8 @@
      "proficient": "8",
      "exemplary": "10",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 78,
@@ -1058,7 +1135,8 @@
      "proficient": "7",
      "exemplary": "10",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 79,
@@ -1071,7 +1149,8 @@
      "proficient": "70",
      "exemplary": "80",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 80,
@@ -1084,7 +1163,8 @@
      "proficient": "8",
      "exemplary": "10",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "Dr. R. S. Padma Priya"
     },
     {
      "no": 81,
@@ -1097,7 +1177,8 @@
      "proficient": "20",
      "exemplary": "30",
      "band": "developing",
-     "wbBand": "developing"
+     "wbBand": "developing",
+     "faculty": "Dr. R. S. Padma Priya"
     },
     {
      "no": 82,
@@ -1110,7 +1191,8 @@
      "proficient": "50",
      "exemplary": "40",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 83,
@@ -1123,7 +1205,8 @@
      "proficient": "50",
      "exemplary": "60",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 84,
@@ -1136,7 +1219,8 @@
      "proficient": "14",
      "exemplary": "20",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "Dr. R. S. Padma Priya"
     },
     {
      "no": 85,
@@ -1149,7 +1233,8 @@
      "proficient": "3",
      "exemplary": "4",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 86,
@@ -1162,7 +1247,8 @@
      "proficient": "3",
      "exemplary": "4",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 87,
@@ -1175,7 +1261,8 @@
      "proficient": "90",
      "exemplary": "100",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Dr. R. S. Padma Priya"
     },
     {
      "no": 88,
@@ -1188,7 +1275,8 @@
      "proficient": "20",
      "exemplary": "30",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 89,
@@ -1201,7 +1289,8 @@
      "proficient": "70",
      "exemplary": "80",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Dr. R. S. Padma Priya"
     },
     {
      "no": 90,
@@ -1214,7 +1303,8 @@
      "proficient": "30",
      "exemplary": "40",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 91,
@@ -1227,7 +1317,8 @@
      "proficient": "70",
      "exemplary": "80",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 92,
@@ -1240,7 +1331,8 @@
      "proficient": "1",
      "exemplary": "2",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "NA"
     },
     {
      "no": 93,
@@ -1253,7 +1345,8 @@
      "proficient": "4",
      "exemplary": "5",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Dr. R. S. Padma Priya"
     },
     {
      "no": 94,
@@ -1266,7 +1359,8 @@
      "proficient": "4",
      "exemplary": "5",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 95,
@@ -1279,7 +1373,8 @@
      "proficient": "1",
      "exemplary": "2",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "NA"
     },
     {
      "no": 96,
@@ -1292,7 +1387,8 @@
      "proficient": "",
      "exemplary": "1",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "Dr. R. S. Padma Priya"
     },
     {
      "no": 97,
@@ -1305,7 +1401,8 @@
      "proficient": "",
      "exemplary": "1",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "Dr. R. S. Padma Priya"
     },
     {
      "no": 98,
@@ -1318,7 +1415,8 @@
      "proficient": "4",
      "exemplary": "5",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 99,
@@ -1331,7 +1429,8 @@
      "proficient": "3",
      "exemplary": "4",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 100,
@@ -1344,7 +1443,8 @@
      "proficient": "0.6",
      "exemplary": "1",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": ""
     },
     {
      "no": 101,
@@ -1357,7 +1457,8 @@
      "proficient": "40",
      "exemplary": "50",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": ""
     },
     {
      "no": 102,
@@ -1370,7 +1471,8 @@
      "proficient": "4",
      "exemplary": "5",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": ""
     },
     {
      "no": 103,
@@ -1383,7 +1485,8 @@
      "proficient": "50",
      "exemplary": "60",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": ""
     },
     {
      "no": 104,
@@ -1396,7 +1499,8 @@
      "proficient": "",
      "exemplary": "Yes",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": ""
     },
     {
      "no": 105,
@@ -1409,7 +1513,8 @@
      "proficient": "3",
      "exemplary": "4",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": ""
     },
     {
      "no": 106,
@@ -1422,7 +1527,8 @@
      "proficient": "8",
      "exemplary": "10",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": ""
     }
    ]
   },
@@ -1441,7 +1547,8 @@
      "proficient": "40",
      "exemplary": "50",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 108,
@@ -1454,7 +1561,8 @@
      "proficient": "80",
      "exemplary": "85",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mr. P. Rahul"
     },
     {
      "no": 109,
@@ -1467,7 +1575,8 @@
      "proficient": "6",
      "exemplary": "7",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     },
     {
      "no": 110,
@@ -1480,7 +1589,8 @@
      "proficient": "4",
      "exemplary": "5",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Mr. P. Rahul"
     }
    ]
   },
@@ -1499,7 +1609,8 @@
      "proficient": "10",
      "exemplary": "12",
      "band": "exemplary",
-     "wbBand": "exemplary"
+     "wbBand": "exemplary",
+     "faculty": "Dr. N. Veeranjaneyulu"
     },
     {
      "no": 112,
@@ -1512,7 +1623,8 @@
      "proficient": "2",
      "exemplary": "3",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "Dr. N. Veeranjaneyulu"
     }
    ]
   },
@@ -1531,7 +1643,8 @@
      "proficient": "80",
      "exemplary": "90",
      "band": "proficient",
-     "wbBand": "proficient"
+     "wbBand": "proficient",
+     "faculty": "Dr. N. Veeranjaneyulu"
     },
     {
      "no": 114,
@@ -1544,7 +1657,8 @@
      "proficient": "2",
      "exemplary": "3",
      "band": "beginning",
-     "wbBand": "beginning"
+     "wbBand": "beginning",
+     "faculty": "NA"
     }
    ]
   }

@@ -33,12 +33,15 @@ export function ensureSchema() {
       // Fast path: once migrated, one cheap query ends the work. All three
       // tables are checked, so a half-applied migration is still repaired.
       const [state] = await sql`
-        SELECT count(*)::int AS n
+        SELECT
+          count(*) FILTER (WHERE column_name = 'year'
+            AND table_name IN ('entries', 'attachments', 'history'))::int AS years,
+          count(*) FILTER (WHERE column_name = 'faculty'
+            AND table_name = 'entries')::int AS faculty
         FROM information_schema.columns
         WHERE table_schema = 'public'
-          AND column_name = 'year'
           AND table_name IN ('entries', 'attachments', 'history')`;
-      if (state && state.n === 3) return;
+      if (state && state.years === 3 && state.faculty === 1) return;
 
       // ---- tables and columns ----
       await sql`
@@ -50,6 +53,7 @@ export function ensureSchema() {
             year          TEXT NOT NULL,
             metric_no     INTEGER NOT NULL,
             response      TEXT NOT NULL DEFAULT '',
+            faculty       TEXT NOT NULL DEFAULT '',
             comment       TEXT NOT NULL DEFAULT '',
             justification TEXT NOT NULL DEFAULT '',
             proof         TEXT NOT NULL DEFAULT '',
@@ -91,6 +95,10 @@ export function ensureSchema() {
           ALTER TABLE entries     ADD COLUMN IF NOT EXISTS year TEXT;
           ALTER TABLE attachments ADD COLUMN IF NOT EXISTS year TEXT;
           ALTER TABLE history     ADD COLUMN IF NOT EXISTS year TEXT;
+
+          -- Faculty member responsible for each metric. Added later than the
+          -- rest, so an existing database picks it up here.
+          ALTER TABLE entries ADD COLUMN IF NOT EXISTS faculty TEXT NOT NULL DEFAULT '';
         END $$`;
 
       // ---- stamp the rows that predate the column ----

@@ -67,6 +67,8 @@ let YEARS = [], YEAR = '', YEAR_COUNTS = {};
 const yearDef = y => YEARS.find(x => x.id === (y || YEAR)) || null;
 const isSeeded = () => !!(yearDef() && yearDef().seeded);
 const baselineOf = r => (isSeeded() ? (r.seedResponse || '') : '');
+// The consolidated list is the 2025-26 assignment, so it seeds that year only.
+const facultyOf = r => (isSeeded() ? (r.seedFaculty || '') : '');
 
 const tally = list => {
   const c = { beginning:0, developing:0, proficient:0, exemplary:0, unrated:0 };
@@ -142,6 +144,7 @@ async function boot() {
     s.rows.forEach(r => {
       r.sec = id;
       r.seedResponse = r.response;   // the workbook figure, kept for seeded years
+      r.seedFaculty = r.faculty || '';
       r.note = ''; r.just = ''; r.proof = ''; r.action = '';
       r.files = []; r.updatedBy = ''; r.updatedAt = null;
       ROWS.push(r); SEC[id].rows.push(r); byNo[r.no] = r;
@@ -168,6 +171,8 @@ function resetRowsForYear() {
   ROWS.forEach(r => {
     r.response = baselineOf(r);
     r.orig = r.response;
+    r.faculty = facultyOf(r);
+    r.facultyOrig = r.faculty;
     r.note = ''; r.just = ''; r.proof = ''; r.action = '';
     r.files = []; r.updatedBy = ''; r.updatedAt = null;
     r.band = scoreRow(r);
@@ -205,7 +210,13 @@ async function switchYear(y) {
   resetRowsForYear();
   ROWS.forEach(r => {
     const tr = trOf[r.no];
-    if (tr) { tr.querySelector('.r-in').value = r.response; tr.querySelector('.c-in').value = ''; }
+    if (tr) {
+      // Every editable cell has to be put back to the new year's starting
+      // point, or the box keeps showing the year just left behind.
+      tr.querySelector('.r-in').value = r.response;
+      tr.querySelector('.f-in').value = r.faculty;
+      tr.querySelector('.c-in').value = '';
+    }
     paintRow(r, false);
   });
   applyYearChrome();
@@ -242,6 +253,7 @@ async function pullState(quiet) {
       if (!e) return;
       if (cur && cur.no === r.no) return;           // don't clobber an open editor
       if (e.response !== undefined) r.response = e.response;
+      if (e.faculty !== undefined && e.faculty !== '') r.faculty = e.faculty;
       r.note = e.comment || '';
       r.just = e.justification || '';
       r.proof = e.proof || '';
@@ -251,7 +263,11 @@ async function pullState(quiet) {
       r.updatedAt = e.updatedAt || null;
       r.band = scoreRow(r);
       const ri = trOf[r.no];
-      if (ri) { ri.querySelector('.r-in').value = r.response; ri.querySelector('.c-in').value = r.note; }
+      if (ri) {
+        ri.querySelector('.r-in').value = r.response;
+        ri.querySelector('.c-in').value = r.note;
+        ri.querySelector('.f-in').value = r.faculty;
+      }
       paintRow(r, false);
     });
     repaint(); applyFilter();
@@ -310,17 +326,20 @@ function buildSheet() {
   let html = '';
   DATA.sections.forEach(sec => {
     const id = slug(sec.name);
-    html += `<tr class="sec" id="${id}"><td colspan="10"><div class="sec-name">
+    html += `<tr class="sec" id="${id}"><td colspan="11"><div class="sec-name">
         ${esc(sec.name)}<span class="sec-count num">${sec.rows.length} metrics</span>
         <span class="sec-bar"></span></div></td></tr>`;
     sec.rows.forEach(r => {
       const cell = b => `<td class="band num" data-b="${b}" style="--c:${cv(b)}">${esc(r[b]) || '—'}</td>`;
       html += `<tr class="metric" data-no="${r.no}" data-sec="${id}"
-          data-text="${esc((r.no + ' ' + r.metric + ' ' + r.portfolio + ' ' + r.type + ' ' + sec.name).toLowerCase())}">
+          data-text="${esc((r.no + ' ' + r.metric + ' ' + r.portfolio + ' ' + r.type + ' ' + sec.name + ' ' + (r.faculty || '')).toLowerCase())}">
         <td class="sno num">${r.no}</td>
         <td class="type">${esc(r.type)}</td>
         <td class="port">${esc(r.portfolio)}</td>
         <td class="metric">${esc(r.metric)}</td>
+        <td class="fac"><textarea class="f-in" rows="2" data-no="${r.no}"
+          placeholder="Not assigned"
+          aria-label="Faculty incharge for metric ${r.no}">${esc(r.faculty)}</textarea></td>
         <td class="resp"><input class="r-in num" data-no="${r.no}" value="${esc(r.response)}"
           aria-label="Response for metric ${r.no}"></td>
         ${cell('beginning')}${cell('developing')}${cell('proficient')}${cell('exemplary')}
@@ -374,6 +393,7 @@ function paintRow(r, flash) {
   ci.placeholder = CMT[r.band];
   tr.classList.toggle('edited', String(r.response) !== String(r.orig) || (r.note || '').trim() !== '');
   tr.classList.toggle('documented', documented(r));
+  tr.classList.toggle('assigned', String(r.faculty || '').trim() !== '');
   if (flash) { tr.classList.remove('flash'); void tr.offsetWidth; tr.classList.add('flash'); }
 }
 
@@ -455,7 +475,7 @@ async function saveMetric(r, force) {
     setSync('busy', 'Saving…');
     const out = await api('/api/entry', { method: 'POST', body: {
       year: YEAR,
-      metricNo: r.no, response: r.response, comment: r.note,
+      metricNo: r.no, response: r.response, faculty: r.faculty, comment: r.note,
       justification: r.just, proof: r.proof, actionPlan: r.action,
       baseUpdatedAt: r.updatedAt, force: !!force } });
     r.updatedBy = out.updatedBy; r.updatedAt = out.updatedAt;
@@ -476,6 +496,8 @@ $('tbody').addEventListener('input', e => {
     paintRow(r, was !== r.band);
   } else if (el.classList.contains('c-in')) {
     r.note = el.value; paintRow(r, false);
+  } else if (el.classList.contains('f-in')) {
+    r.faculty = el.value; paintRow(r, false);
   }
   repaint(); applyFilter(); queueSave(r);
 });
@@ -487,9 +509,12 @@ $('tbody').addEventListener('click', e => {
 });
 
 $('tbody').addEventListener('keydown', e => {
-  if (e.key !== 'Enter' || !e.target.classList.contains('r-in')) return;
+  if (e.key !== 'Enter') return;
+  const cls = e.target.classList.contains('r-in') ? '.r-in'
+            : e.target.classList.contains('f-in') ? '.f-in' : null;
+  if (!cls) return;
   e.preventDefault();
-  const all = [...document.querySelectorAll('tr.metric:not([hidden]) .r-in')];
+  const all = [...document.querySelectorAll('tr.metric:not([hidden]) ' + cls)];
   const i = all.indexOf(e.target);
   if (i > -1 && all[i + 1]) all[i + 1].focus();
 });
@@ -536,6 +561,7 @@ function renderStrip(r) {
     <div class="d-type">${esc(r.type)}</div>
     <div class="d-port">${esc(r.portfolio)}</div>
     <div class="d-met">${esc(r.metric)}</div>
+    <div class="d-fac">${esc(r.faculty) || '—'}</div>
     <div class="d-resp num">${esc(r.response) || '—'}</div>
     ${BANDS.map(b => `<div class="d-band${r.band === b ? ' on' : ''}" style="--c:${cv(b)}">${esc(r[b]) || '—'}</div>`).join('')}
     <div class="d-cmt">${esc(commentOf(r))}</div>`;
@@ -614,7 +640,8 @@ function showConflict(r, theirs) {
   box.innerHTML = `
     <h4>${esc(theirs.updatedBy || 'Someone else')} saved this metric while you were editing</h4>
     <p>Saved ${new Date(theirs.updatedAt).toLocaleString()}. Your version has not been written yet.</p>
-    <pre>Response: ${esc(theirs.response || '—')}
+    <pre>Faculty incharge: ${esc(theirs.faculty || '—')}
+Response: ${esc(theirs.response || '—')}
 Justification: ${esc(theirs.justification || '—')}
 Proof: ${esc(theirs.proof || '—')}
 Action plan: ${esc(theirs.actionPlan || '—')}</pre>
@@ -628,10 +655,14 @@ Action plan: ${esc(theirs.actionPlan || '—')}</pre>
   };
   $('c-take').onclick = () => {
     r.response = theirs.response; r.note = theirs.comment || '';
+    r.faculty = theirs.faculty || '';
     r.just = theirs.justification; r.proof = theirs.proof; r.action = theirs.actionPlan;
     r.updatedBy = theirs.updatedBy; r.updatedAt = theirs.updatedAt;
     r.band = scoreRow(r);
-    if (trOf[r.no]) trOf[r.no].querySelector('.r-in').value = r.response;
+    if (trOf[r.no]) {
+      trOf[r.no].querySelector('.r-in').value = r.response;
+      trOf[r.no].querySelector('.f-in').value = r.faculty;
+    }
     paintRow(r, true); repaint();
     box.hidden = true;
     if (cur && cur.no === r.no) openDetail(r);
@@ -708,14 +739,14 @@ async function upload(file) {
 /* ---------------- CSV ---------------- */
 $('btn-csv').onclick = () => {
   const q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
-  const head = ['S.No.','Effectiveness / Efficiency','Portfolio','Metrics','Response (2025-26)',
+  const head = ['S.No.','Effectiveness / Efficiency','Portfolio','Metrics','Faculty Incharge','Response',
     'Beginning','Developing','Proficient','Exemplary','Band','Comments',
     'Justification','Proof','Action plan','Proof files','Last saved by','Last saved at'];
   const lines = [head.map(q).join(',')];
   DATA.sections.forEach(sec => {
     lines.push(q(sec.name) + ','.repeat(head.length - 1));
     SEC[slug(sec.name)].rows.forEach(r => lines.push([
-      r.no, r.type, r.portfolio, r.metric, r.response,
+      r.no, r.type, r.portfolio, r.metric, r.faculty, r.response,
       r.beginning, r.developing, r.proficient, r.exemplary, LBL[r.band], commentOf(r),
       r.just, r.proof, r.action,
       (r.files || []).map(f => f.url).join(' | '),

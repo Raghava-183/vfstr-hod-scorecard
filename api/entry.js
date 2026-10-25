@@ -4,6 +4,7 @@ import { validYear } from './_years.js';
 
 const FIELDS = [
   ['response', 'response'],
+  ['faculty', 'faculty'],
   ['comment', 'comment'],
   ['justification', 'justification'],
   ['proof', 'proof'],
@@ -39,6 +40,7 @@ export default async function handler(req, res) {
         error: 'conflict',
         theirs: {
           response: current.response,
+          faculty: current.faculty,
           comment: current.comment,
           justification: current.justification,
           proof: current.proof,
@@ -51,11 +53,11 @@ export default async function handler(req, res) {
   }
 
   const [saved] = await sql`
-    INSERT INTO entries (year, metric_no, response, comment, justification, proof, action_plan, updated_by, updated_at)
-    VALUES (${year}, ${no}, ${next.response}, ${next.comment}, ${next.justification},
+    INSERT INTO entries (year, metric_no, response, faculty, comment, justification, proof, action_plan, updated_by, updated_at)
+    VALUES (${year}, ${no}, ${next.response}, ${next.faculty}, ${next.comment}, ${next.justification},
             ${next.proof}, ${next.actionPlan}, ${session.name}, now())
     ON CONFLICT (year, metric_no) DO UPDATE SET
-      response = EXCLUDED.response, comment = EXCLUDED.comment,
+      response = EXCLUDED.response, faculty = EXCLUDED.faculty, comment = EXCLUDED.comment,
       justification = EXCLUDED.justification, proof = EXCLUDED.proof,
       action_plan = EXCLUDED.action_plan,
       updated_by = EXCLUDED.updated_by, updated_at = now()

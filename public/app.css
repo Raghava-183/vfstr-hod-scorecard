@@ -211,7 +211,7 @@ tr.sec td{background:linear-gradient(180deg,#e8eef7,#dde6f2); border-top:2px sol
 /* ---------- per-metric detail page ---------- */
 .d-nav{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:16px 0 4px}
 .d-nav .pos{font-size:13px; color:var(--ink2); margin-left:auto}
-.d-strip{display:grid; grid-template-columns:52px 108px 108px minmax(240px,1fr) 108px repeat(4,92px) minmax(180px,220px);
+.d-strip{display:grid; grid-template-columns:52px 108px 108px minmax(220px,1fr) 150px 108px repeat(4,92px) minmax(170px,210px);
   align-items:center; background:var(--t); border-left:6px solid var(--c);
   border:1px solid var(--rule-2); border-left:6px solid var(--c); border-radius:5px;
   overflow:hidden; box-shadow:var(--shadow)}
@@ -247,7 +247,7 @@ tr.documented td.sno::before{content:"\2713"; color:var(--exemplary-i); font-wei
 tr.metric{cursor:pointer}
 @media (max-width:1180px){
   .d-strip{grid-template-columns:46px minmax(200px,1fr) 96px repeat(4,74px)}
-  .d-strip .d-type,.d-strip .d-port,.d-strip .d-cmt{display:none}
+  .d-strip .d-type,.d-strip .d-port,.d-strip .d-cmt,.d-strip .d-fac{display:none}
 }
 @media (max-width:720px){
   .d-field{grid-template-columns:1fr}
@@ -435,3 +435,30 @@ tr.metric td.sno{position:relative}
 .donut.empty{background:conic-gradient(var(--unrated) 0 360deg); opacity:.55}
 .donut.empty + .donut-txt,.donut.empty .donut-txt .n{color:#fff}
 .yeartab[aria-selected="true"]::after{content:none}
+
+/* ==========================================================
+   Faculty Incharge column
+   ========================================================== */
+td.fac{width:170px}
+.f-in{
+  font:inherit; font-size:12.5px; line-height:1.35; width:100%; color:var(--ink);
+  border:1px solid transparent; border-bottom:1.5px dashed var(--rule-2);
+  border-radius:4px; background:transparent; padding:3px 6px; transition:.13s;
+  resize:none; overflow:hidden; display:block; min-height:2.9em;
+}
+.f-in::placeholder{color:var(--ink3); font-style:italic}
+.f-in:hover{border-color:var(--rule-2); background:#fff}
+.f-in:focus{outline:none; border-color:var(--rail); background:#fff;
+  box-shadow:0 0 0 3px color-mix(in oklab, var(--rail) 22%, transparent)}
+
+/* a name that has been typed and saved reads as settled, not as a placeholder */
+tr.metric.assigned .f-in{border-bottom-style:solid; font-weight:560}
+
+/* on the metric's own page it is context, not an input */
+.d-strip .d-fac{font-size:12.5px; color:var(--ink2); line-height:1.3; font-weight:560}
+
+@media (max-width:940px){ td.fac{display:none} thead tr:last-child th:nth-child(5){display:none} }
+@media print{
+  .f-in{border:0; background:transparent; padding:0; font-weight:500}
+  .f-in::placeholder{color:transparent}
+}

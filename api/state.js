@@ -20,7 +20,7 @@ async function state(req, res) {
   const year = validYear(req.query.year) || DEFAULT_YEAR;
 
   const [entries, files, counts] = await Promise.all([
-    sql`SELECT metric_no, response, comment, justification, proof, action_plan,
+    sql`SELECT metric_no, response, faculty, comment, justification, proof, action_plan,
                updated_by, updated_at
         FROM entries WHERE year = ${year} ORDER BY metric_no`,
     sql`SELECT id, metric_no, url, filename, bytes, uploaded_by, uploaded_at
@@ -36,6 +36,7 @@ async function state(req, res) {
   for (const e of entries) {
     byMetric[e.metric_no] = {
       response: e.response,
+      faculty: e.faculty,
       comment: e.comment,
       justification: e.justification,
       proof: e.proof,

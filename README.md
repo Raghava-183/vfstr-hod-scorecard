@@ -122,6 +122,13 @@ skipped on every later request.
 
 ## How it behaves
 
+**Faculty Incharge.** A column after Metrics naming who is responsible for each metric.
+It is a text box that saves on its own about a second after typing stops — there is no
+save button, so a change of ownership takes a moment to record. The name is held per
+year, so 2026-27 can differ from 2025-26. 2025-26 opens pre-filled from the
+department's consolidated list; 2026-27 starts empty. Searching matches faculty names
+as well as metric text, so typing a surname filters to that person's metrics.
+
 **Switching year.** The tabs reload that year from the database. The page never carries
 one year's typing into another.
 
